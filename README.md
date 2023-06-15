@@ -5,8 +5,9 @@ Github repository to share analysis code used in Beard et al. 2023 for any who w
 My results were run in an anaconda environment on the UCI HPC cluster. The following software packages and their versions were installed:
 
 
-# Name                    Version                   Build  Channel
-_libgcc_mutex             0.1                        main  
+| Name          |          Version         |          Build  Channel |
+|-------------- |     -----------------    |    -------------------- |
+|_libgcc_mutex    |         0.1            |            main  |
 
 _openmp_mutex             4.5                       1_gnu  
 _r-mutex                  1.0.1               anacondar_1    conda-forge
