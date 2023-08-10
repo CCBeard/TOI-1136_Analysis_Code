@@ -9,7 +9,7 @@ My results were run in an anaconda environment on the UCI HPC cluster. The follo
 |-------------- |     -----------------    |    -------------------- |
 |_libgcc_mutex    |         0.1            |            main  |
 |_openmp_mutex             |4.5            |           1_gnu  
-|_r-mutex                  1.0.1           |    anacondar_1    conda-forge
+|_r-mutex                  |1.0.1           |    anacondar_1    conda-forge |
 |aesara-theano-fallback    |0.0.4          |          pypi_0    pypi
 |alabaster                 |0.7.12         |          pypi_0    pypi
 |argparse                  |1.4.0          |          pypi_0    pypi
