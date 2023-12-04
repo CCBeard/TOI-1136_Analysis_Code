@@ -1,5 +1,5 @@
 # TOI-1136_Analysis_Code
-Github repository to share analysis code used in Beard et al. 2024 for any who wish to reproduce, or modify, results.
+Github repository to share analysis code used in Beard et al. 2024 for any who wish to reproduce, or modify, results. We include the fit for the 7 planet model, even though we adopt the 6 planet model as our preferred fit in Beard et al. 2024. We do this because the 6 planet model is in principle a subset of the 7 planet model, and can be reproduced fairly easily from our 7 planet analysis code.
 
 
 My results were run in an anaconda environment on the UCI HPC cluster. The following software packages and their versions were installed:
