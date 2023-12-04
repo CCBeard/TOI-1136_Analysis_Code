@@ -1,5 +1,5 @@
 # TOI-1136_Analysis_Code
-Github repository to share analysis code used in Beard et al. 2023 for any who wish to reproduce, or modify, results.
+Github repository to share analysis code used in Beard et al. 2024 for any who wish to reproduce, or modify, results.
 
 
 My results were run in an anaconda environment on the UCI HPC cluster. The following software packages and their versions were installed:
