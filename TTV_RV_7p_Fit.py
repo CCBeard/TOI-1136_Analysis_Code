@@ -704,7 +704,11 @@ def apply_prior(parameter_val, prior_type, a, b):
 
     if prior_type == 'gaussian':
         out = -0.5 * ((parameter_val - a) / b)**2 - 0.5*np.log((b**2)*2.*np.pi)
-
+    if prior_type == 'bounded_gaussian': #added this to prevent inclination from crossing 90 degrees
+        if parameter_val > 90.: #don't let inclination cross
+            out = -np.inf
+        else:
+            out = -0.5 * ((parameter_val - a) / b)**2 - 0.5*np.log((b**2)*2.*np.pi)
     return out
 
 
@@ -985,7 +989,7 @@ Insol_earth = 1360
 ###########################
 
 desig = 'TOI-1136'
-h_period = 160. #starting value for planet h orbital period
+h_period = 80. #starting value for planet h orbital period
 nsteps = 0 #how many mcmc steps to do
 multi_cpu = False
 
@@ -1000,7 +1004,7 @@ ttv_fit = [0,1,2,3,4,5,6]
 
 period_input = np.array([4.17278,6.25725,12.51937,18.7992,26.3162,39.5387,h_period],'d') #taken from D23
 e_input = np.array([0.031,0.117,0.016,0.057,0.012,0.036, 0.01],'d')#All taken from D23, except e_h
-i_input = np.array([86.44,89.42,89.41,89.31,89.38,89.65,90.0],'d')
+i_input = np.array([86.44,89.42,89.41,89.31,89.38,89.65,89.9],'d')
 longnode_input = np.array([0., 0., 0., 0., 0., 0.,0.],'d') #longitude of ascending node, the inner should be fixed to 0 if varying
 
 
@@ -1223,7 +1227,7 @@ for i in range(n_p):
                    period_input[i]*1.01, #period
                    1.0, #sesinw
                    1.0, #secosw
-                   90.3, #0.3,#maximum geometric transiting angle
+                   90., #0.3,#maximum geometric transiting angle
                    #180., #long of ascending node
                    180.] #mean anomaly
     #priors are a bit different for 1136.07
@@ -1232,7 +1236,7 @@ for i in range(n_p):
                    1000., #period
                    1.0, #sesinw
                    1.0, #secosw
-                   100., #inclination
+                   90., #inclination
                    #180., #long of ascending node
                    180.] #mean anomaly
 
@@ -1265,7 +1269,7 @@ for i in range(n_p):
                       'uniform',
                        'uniform',
                         'uniform',
-                         'gaussian', #inclination has a gaussian prior
+                         'bounded_gaussian', #inclination has a gaussian prior
                           'uniform']
     else:
         prior_type+=['uniform',
@@ -1348,9 +1352,9 @@ mcmc_name = np.append(mcmc_name, 'gp_explength')
 mcmc_name = np.append(mcmc_name, 'gp_per')
 mcmc_name = np.append(mcmc_name, 'gp_perlength')
 
-mcmc_prior = np.append(mcmc_prior, 'gaussian')
-mcmc_prior = np.append(mcmc_prior, 'gaussian')
-mcmc_prior = np.append(mcmc_prior, 'gaussian')
+mcmc_prior = np.append(mcmc_prior, 'uniform')
+mcmc_prior = np.append(mcmc_prior, 'uniform')
+mcmc_prior = np.append(mcmc_prior, 'uniform')
 mcmc_prior = np.append(mcmc_prior, 'gaussian')
 mcmc_prior = np.append(mcmc_prior, 'gaussian')
 mcmc_prior = np.append(mcmc_prior, 'gaussian')
@@ -1359,16 +1363,16 @@ mcmc_prior = np.append(mcmc_prior, 'gaussian')
 #     Prior A and B.     #
 ##########################
 
-prior_a = np.append(prior_a, gp_amp_mu) #one for each instrument
-prior_a = np.append(prior_a, gp_amp_mu)
-prior_a = np.append(prior_a, gp_amp_mu)
+prior_a = np.append(prior_a, gp_amp_min) #one for each instrument
+prior_a = np.append(prior_a, gp_amp_min)
+prior_a = np.append(prior_a, gp_amp_min)
 prior_a = np.append(prior_a, gp_explength_mu)
 prior_a = np.append(prior_a, gp_per_mu)
 prior_a = np.append(prior_a, gp_perlength_mu)
 
-prior_b = np.append(prior_b, gp_amp_sd) #one for each instrument
-prior_b = np.append(prior_b, gp_amp_sd)
-prior_b = np.append(prior_b, gp_amp_sd)
+prior_b = np.append(prior_b, gp_amp_max) #one for each instrument
+prior_b = np.append(prior_b, gp_amp_max)
+prior_b = np.append(prior_b, gp_amp_max)
 prior_b = np.append(prior_b, gp_explength_sd)
 prior_b = np.append(prior_b, gp_per_sd)
 prior_b = np.append(prior_b, gp_perlength_sd)
@@ -1385,9 +1389,6 @@ for i in range(len(i_mu)):
     prior_a[i*6+4] = i_mu[i] #change to mean
     prior_b[i*6+4] = i_sd[i] #change to sd
 
-#change planet h's period prior
-prior_a[37] = 155.53 #change it to NS posterior
-prior_b[37] = 5.21
 
 
 
